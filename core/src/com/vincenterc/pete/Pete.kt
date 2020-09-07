@@ -43,6 +43,20 @@ class Pete {
         )
     }
 
+    fun setPosition(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+        updateCollisionRectangle()
+    }
+
+    fun getX(): Float {
+        return x
+    }
+
+    fun getY(): Float {
+        return y
+    }
+
     private fun updateCollisionRectangle() {
         collisionRectangle.setPosition(x, y)
     }

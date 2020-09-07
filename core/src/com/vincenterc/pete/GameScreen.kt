@@ -52,11 +52,24 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         update(delta)
         clearScreen()
         draw()
-        drawDebug();
+        drawDebug()
     }
 
     private fun update(delta: Float) {
         pete.update()
+        stopPeteLeavingTheScreen()
+    }
+
+    fun stopPeteLeavingTheScreen() {
+        if (pete.getY() < 0f) {
+            pete.setPosition(pete.getX(), 0f)
+        }
+        if (pete.getX() < 0f) {
+            pete.setPosition(0f, pete.getY())
+        }
+        if (pete.getX() + Pete.WIDTH > WORLD_WIDTH) {
+            pete.setPosition(WORLD_WIDTH - Pete.WIDTH, pete.getY())
+        }
     }
 
     private fun clearScreen() {
