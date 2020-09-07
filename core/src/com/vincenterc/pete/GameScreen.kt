@@ -21,11 +21,13 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
     private lateinit var shapeRenderer: ShapeRenderer
     private lateinit var viewport: Viewport
     private lateinit var camera: OrthographicCamera
-    
+
     private lateinit var batch: SpriteBatch
 
     private lateinit var tiledMap: TiledMap
     private lateinit var orthogonalTiledMapRenderer: OrthogonalTiledMapRenderer
+
+    private lateinit var pete: Pete
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)
@@ -42,6 +44,8 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         tiledMap = peteGame.getAssetManager().get("pete.tmx")
         orthogonalTiledMapRenderer = OrthogonalTiledMapRenderer(tiledMap, batch)
         orthogonalTiledMapRenderer.setView(camera)
+
+        pete = Pete()
     }
 
     override fun render(delta: Float) {
@@ -52,6 +56,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
     }
 
     private fun update(delta: Float) {
+        pete.update()
     }
 
     private fun clearScreen() {
@@ -69,6 +74,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         shapeRenderer.projectionMatrix = camera.projection
         shapeRenderer.transformMatrix = camera.view
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        pete.drawDebug(shapeRenderer)
         shapeRenderer.end()
     }
 }
