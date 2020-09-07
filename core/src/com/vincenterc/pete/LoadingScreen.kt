@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 
@@ -31,6 +32,8 @@ class LoadingScreen(private val peteGame: PeteGame) : ScreenAdapter() {
 
         viewport = FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera)
         shapeRenderer = ShapeRenderer()
+
+        peteGame.getAssetManager().load("pete.tmx", TiledMap::class.java)
     }
 
     override fun render(delta: Float) {
