@@ -63,6 +63,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
     fun stopPeteLeavingTheScreen() {
         if (pete.getY() < 0f) {
             pete.setPosition(pete.getX(), 0f)
+            pete.landed()
         }
         if (pete.getX() < 0f) {
             pete.setPosition(0f, pete.getY())
