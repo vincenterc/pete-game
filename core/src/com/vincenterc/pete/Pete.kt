@@ -119,6 +119,10 @@ class Pete(texture: Texture) {
         return y
     }
 
+    fun getCollisionRectangle(): Rectangle {
+        return collisionRectangle
+    }
+
     private fun updateCollisionRectangle() {
         collisionRectangle.setPosition(x, y)
     }
