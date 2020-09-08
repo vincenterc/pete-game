@@ -2,10 +2,14 @@ package com.vincenterc.pete
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 
-class Pete {
+class Pete(texture: Texture) {
     companion object {
         const val WIDTH = 16
         const val HEIGHT = 15
@@ -25,7 +29,26 @@ class Pete {
     private var blockJump = false
     private var jumpYDistance = 0f
 
-    fun update() {
+    private var animationTimer = 0f
+    private var walking: Animation<TextureRegion>
+    private var standing: TextureRegion
+    private var jumpUP: TextureRegion
+    private var jumpDown: TextureRegion
+
+    init {
+        var regions = TextureRegion.split(texture, WIDTH, HEIGHT)[0]
+
+        walking = Animation(0.25f, regions[0], regions[1])
+        walking.playMode = Animation.PlayMode.LOOP
+
+        standing = regions[0]
+        jumpUP = regions[2]
+        jumpDown = regions[3]
+    }
+
+    fun update(delta: Float) {
+        animationTimer += delta
+
         var input = Gdx.input
 
         xSpeed = if (input.isKeyPressed(Input.Keys.RIGHT)) MAX_X_SPEED
@@ -54,6 +77,26 @@ class Pete {
             collisionRectangle.width,
             collisionRectangle.height
         )
+    }
+
+    fun draw(batch: Batch) {
+        var toDraw = standing
+        if (xSpeed != 0f) {
+            toDraw = walking.getKeyFrame(animationTimer)
+        }
+        if (ySpeed > 0) {
+            toDraw = jumpUP
+        } else if (ySpeed < 0) {
+            toDraw = jumpDown
+        }
+
+        if (xSpeed < 0) {
+            if (!toDraw.isFlipX) toDraw.flip(true, false)
+        } else if (xSpeed > 0) {
+            if (toDraw.isFlipX) toDraw.flip(true, false)
+        }
+
+        batch.draw(toDraw, x, y)
     }
 
     fun landed() {

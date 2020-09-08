@@ -45,7 +45,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         orthogonalTiledMapRenderer = OrthogonalTiledMapRenderer(tiledMap, batch)
         orthogonalTiledMapRenderer.setView(camera)
 
-        pete = Pete()
+        pete = Pete(peteGame.getAssetManager().get("pete.png"))
     }
 
     override fun render(delta: Float) {
@@ -56,7 +56,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
     }
 
     private fun update(delta: Float) {
-        pete.update()
+        pete.update(delta)
         stopPeteLeavingTheScreen()
     }
 
@@ -82,6 +82,9 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         batch.projectionMatrix = camera.projection
         batch.transformMatrix = camera.view
         orthogonalTiledMapRenderer.render()
+        batch.begin()
+        pete.draw(batch)
+        batch.end()
     }
 
     private fun drawDebug() {
