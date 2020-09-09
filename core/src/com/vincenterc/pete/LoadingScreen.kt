@@ -34,6 +34,7 @@ class LoadingScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         shapeRenderer = ShapeRenderer()
 
         peteGame.getAssetManager().load("pete.png", Texture::class.java)
+        peteGame.getAssetManager().load("acorn.png", Texture::class.java)
         peteGame.getAssetManager().load("pete.tmx", TiledMap::class.java)
     }
 

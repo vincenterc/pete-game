@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -34,6 +35,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
     private lateinit var orthogonalTiledMapRenderer: OrthogonalTiledMapRenderer
 
     private lateinit var pete: Pete
+    private var acorns = mutableListOf<Acorn>()
 
     override fun resize(width: Int, height: Int) {
         viewport.update(width, height)
@@ -53,6 +55,22 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
 
         pete = Pete(peteGame.getAssetManager().get("pete.png"))
         pete.setPosition(0f, WORLD_HEIGHT / 2f)
+
+        populateAcorns()
+    }
+
+    private fun populateAcorns() {
+        var mapLayer = tiledMap.layers.get("Collectables")
+
+        for (mapObject in mapLayer.objects) {
+            acorns.add(
+                Acorn(
+                    peteGame.getAssetManager().get("acorn.png", Texture::class.java),
+                    mapObject.properties.get("x", Float::class.java),
+                    mapObject.properties.get("y", Float::class.java)
+                )
+            )
+        }
     }
 
     private fun whichCellsDoesPeteCover(): Array<CollisionCell> {
@@ -189,6 +207,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         batch.transformMatrix = camera.view
         orthogonalTiledMapRenderer.render()
         batch.begin()
+        acorns.forEach { it.draw(batch) }
         pete.draw(batch)
         batch.end()
     }
