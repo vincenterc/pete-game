@@ -16,6 +16,8 @@ class Acorn(
 
     private var collision = Rectangle(x, y, WIDTH.toFloat(), HEIGHT.toFloat())
 
+    fun getCollisionRectangle() = collision
+
     fun draw(batch: Batch) {
         batch.draw(texture, x, y)
     }

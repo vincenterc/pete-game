@@ -153,6 +153,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         pete.update(delta)
         stopPeteLeavingTheScreen()
         handlePeteCollision()
+        handlePeteCollisionWithAcorn()
     }
 
     private fun handlePeteCollision() {
@@ -195,6 +196,12 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
         if (pete.getX() + Pete.WIDTH > WORLD_WIDTH) {
             pete.setPosition(WORLD_WIDTH - Pete.WIDTH, pete.getY())
         }
+    }
+
+    private fun handlePeteCollisionWithAcorn() {
+        acorns = acorns.filter {
+            pete.getCollisionRectangle().overlaps(it.getCollisionRectangle())
+        }.toMutableList()
     }
 
     private fun clearScreen() {
