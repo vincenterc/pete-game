@@ -200,7 +200,7 @@ class GameScreen(private val peteGame: PeteGame) : ScreenAdapter() {
 
     private fun handlePeteCollisionWithAcorn() {
         acorns = acorns.filter {
-            pete.getCollisionRectangle().overlaps(it.getCollisionRectangle())
+            !pete.getCollisionRectangle().overlaps(it.getCollisionRectangle())
         }.toMutableList()
     }
 
